@@ -39,6 +39,14 @@ Each level features unique visual themes and road textures:
 - **Fast Loading**: Service worker caching for instant startup
 - **Native Feel**: Full-screen experience when installed
 
+### Authentication & Leaderboard
+- **User Accounts**: Sign up/sign in with email and password
+- **Global Leaderboard**: Compete with players worldwide
+- **Score Tracking**: Submit and track your best scores
+- **Level Filtering**: View leaderboards by specific levels
+- **Personal Stats**: Track your ranking and progress
+- **Secure Backend**: Powered by Supabase with Row Level Security
+
 ## 🚀 Quick Start
 
 ### Play Online
@@ -121,6 +129,17 @@ Once deployed, you can install the game as a native app:
    ```
 
 2. **Upload files** directly to Vercel dashboard
+
+## 🏆 Supabase Leaderboard Setup
+
+To enable authentication and leaderboard features:
+
+1. **Create a Supabase account** at [supabase.com](https://supabase.com)
+2. **Create a new project**
+3. **Follow the detailed setup guide** in `SUPABASE_SETUP.md`
+4. **Configure your credentials** in `src/supabase.js`
+
+**Note**: The game works without Supabase, but leaderboard features will be disabled.
 
 ## 🎨 Customization Guide
 

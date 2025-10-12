@@ -454,6 +454,12 @@ class UI {
         });
     }
 
+    updateAuthUI(user) {
+        if (window.auth) {
+            window.auth.updateAuthButtons(user);
+        }
+    }
+
     reset() {
         this.scoreCounterCurrent = 0;
         this.scoreCounterTarget = 0;

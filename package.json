@@ -8,9 +8,12 @@
     "build": "echo 'Static files ready for deployment'",
     "start": "npx serve ."
   },
-  "keywords": ["game", "arcade", "chicken", "crossing", "2d"],
+  "keywords": ["game", "arcade", "chicken", "crossing", "2d", "leaderboard", "pwa"],
   "author": "Your Name",
   "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0"
+  },
   "devDependencies": {
     "serve": "^14.0.0"
   }

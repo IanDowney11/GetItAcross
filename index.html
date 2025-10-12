@@ -75,11 +75,17 @@
         <div id="gameUI">
             <!-- HUD -->
             <div id="hud" class="hidden">
-                <div id="levelDisplay">Level: <span id="levelNumber">1</span></div>
-                <div id="livesDisplay">Lives: <span id="livesNumber">5</span></div>
-                <div id="scoreDisplay">Score: <span id="scoreNumber">0</span></div>
-                <button id="pauseBtn" class="ui-button">⏸️</button>
-                <button id="muteBtn" class="ui-button">🔊</button>
+                <div class="hud-left">
+                    <div id="levelDisplay">Level: <span id="levelNumber">1</span></div>
+                    <div id="livesDisplay">Lives: <span id="livesNumber">5</span></div>
+                    <div id="scoreDisplay">Score: <span id="scoreNumber">0</span></div>
+                </div>
+                <div class="hud-right">
+                    <button id="leaderboardBtn" class="ui-button">🏆</button>
+                    <button id="authBtn" class="ui-button">👤</button>
+                    <button id="pauseBtn" class="ui-button">⏸️</button>
+                    <button id="muteBtn" class="ui-button">🔊</button>
+                </div>
             </div>
 
             <!-- Start Menu -->
@@ -87,6 +93,8 @@
                 <h1>Get It Across</h1>
                 <p>Help the chicken cross the road safely!</p>
                 <button id="startBtn" class="menu-button">Start Game</button>
+                <button id="viewLeaderboardBtn" class="menu-button">🏆 Leaderboard</button>
+                <button id="loginBtn" class="menu-button" id="mainAuthBtn">👤 Sign In</button>
                 <div class="controls-info">
                     <p><strong>Desktop:</strong> Arrow keys or WASD</p>
                     <p><strong>Mobile:</strong> Touch controls below</p>
@@ -98,6 +106,7 @@
                 <h2>Game Paused</h2>
                 <button id="resumeBtn" class="menu-button">Resume</button>
                 <button id="restartBtn" class="menu-button">Restart Level</button>
+                <button id="pauseLeaderboardBtn" class="menu-button">🏆 Leaderboard</button>
                 <button id="mainMenuBtn" class="menu-button">Main Menu</button>
             </div>
 
@@ -115,6 +124,58 @@
                 <p>Score: <span id="levelScore">0</span></p>
                 <p>Bonus: <span id="timeBonus">0</span></p>
                 <button id="nextLevelBtn" class="menu-button">Next Level</button>
+                <button id="submitScoreBtn" class="menu-button hidden">Submit to Leaderboard</button>
+            </div>
+
+            <!-- Authentication Modal -->
+            <div id="authModal" class="menu-screen hidden">
+                <div class="auth-container">
+                    <h2 id="authTitle">Sign In</h2>
+                    <form id="authForm">
+                        <div class="form-group">
+                            <label for="authEmail">Email:</label>
+                            <input type="email" id="authEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="authPassword">Password:</label>
+                            <input type="password" id="authPassword" required>
+                        </div>
+                        <div class="form-group hidden" id="usernameGroup">
+                            <label for="authUsername">Username:</label>
+                            <input type="text" id="authUsername">
+                        </div>
+                        <button type="submit" id="authSubmitBtn" class="menu-button">Sign In</button>
+                    </form>
+                    <div class="auth-links">
+                        <button id="authToggle" class="link-button">Need an account? Sign up</button>
+                        <button id="forgotPassword" class="link-button">Forgot password?</button>
+                    </div>
+                    <button id="authCloseBtn" class="menu-button secondary">Close</button>
+                </div>
+            </div>
+
+            <!-- Leaderboard Modal -->
+            <div id="leaderboardModal" class="menu-screen hidden">
+                <div class="leaderboard-container">
+                    <h2>🏆 Leaderboard</h2>
+                    <div class="leaderboard-filters">
+                        <button class="filter-btn active" data-filter="all">All Levels</button>
+                        <button class="filter-btn" data-filter="1">Level 1</button>
+                        <button class="filter-btn" data-filter="2">Level 2</button>
+                        <button class="filter-btn" data-filter="3">Level 3</button>
+                        <button class="filter-btn" data-filter="4">Level 4</button>
+                        <button class="filter-btn" data-filter="5">Level 5</button>
+                    </div>
+                    <div id="leaderboardContent">
+                        <div class="loading">Loading leaderboard...</div>
+                    </div>
+                    <div id="userStats" class="user-stats hidden">
+                        <h3>Your Stats</h3>
+                        <p>Best Score: <span id="userBestScore">-</span></p>
+                        <p>Global Rank: <span id="userRank">-</span></p>
+                    </div>
+                    <button id="leaderboardCloseBtn" class="menu-button">Close</button>
+                </div>
             </div>
         </div>
 
@@ -144,6 +205,9 @@
     <script src="src/vehicles.js"></script>
     <script src="src/collision.js"></script>
     <script src="src/levels.js"></script>
+    <script src="src/supabase.js"></script>
+    <script src="src/auth.js"></script>
+    <script src="src/leaderboard.js"></script>
     <script src="src/ui.js"></script>
     <script src="src/game.js"></script>
 

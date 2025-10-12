@@ -13,6 +13,9 @@ const urlsToCache = [
   '/src/vehicles.js',
   '/src/collision.js',
   '/src/levels.js',
+  '/src/supabase.js',
+  '/src/auth.js',
+  '/src/leaderboard.js',
   '/src/ui.js',
   '/src/game.js'
 ];

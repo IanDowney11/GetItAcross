@@ -78,6 +78,14 @@ class Game {
         document.getElementById('backToMenuBtn').addEventListener('click', () => this.showMainMenu());
         document.getElementById('nextLevelBtn').addEventListener('click', () => this.nextLevel());
         document.getElementById('muteBtn').addEventListener('click', () => this.toggleMute());
+
+        // Auth and leaderboard buttons
+        document.getElementById('authBtn').addEventListener('click', () => this.handleAuthButtonClick());
+        document.getElementById('loginBtn').addEventListener('click', () => this.handleAuthButtonClick());
+        document.getElementById('leaderboardBtn').addEventListener('click', () => this.showLeaderboard());
+        document.getElementById('viewLeaderboardBtn').addEventListener('click', () => this.showLeaderboard());
+        document.getElementById('pauseLeaderboardBtn').addEventListener('click', () => this.showLeaderboard());
+        document.getElementById('submitScoreBtn').addEventListener('click', () => this.submitScore());
     }
 
     startGame() {
@@ -150,9 +158,13 @@ class Game {
 
         this.score += totalScore;
         this.gameState = 'levelComplete';
+        this.lastLevelTime = levelTime;
 
         this.ui.showLevelComplete(totalScore, timeBonus);
         this.audio.playSound('levelComplete');
+
+        // Show submit score button if user is authenticated
+        this.updateSubmitScoreButton();
     }
 
     playerHit() {
@@ -239,8 +251,107 @@ class Game {
 
         requestAnimationFrame((time) => this.gameLoop(time));
     }
+
+    // Authentication and Leaderboard Methods
+    handleAuthButtonClick() {
+        if (window.supabaseClient && window.supabaseClient.isAuthenticated()) {
+            // User is signed in, show options
+            this.showUserMenu();
+        } else {
+            // User is not signed in, show auth modal
+            window.auth.show(false);
+        }
+    }
+
+    showUserMenu() {
+        const user = window.supabaseClient.getUser();
+        const username = user.user_metadata?.username || user.email?.split('@')[0] || 'User';
+
+        // Show user options directly
+        if (confirm(`Signed in as: ${username}\n\nChoose an option:\nOK = View Leaderboard\nCancel = Sign Out`)) {
+            this.showLeaderboard();
+        } else {
+            window.auth.handleSignOut();
+        }
+    }
+
+    showLeaderboard() {
+        if (window.leaderboard) {
+            window.leaderboard.show();
+        }
+    }
+
+    async submitScore() {
+        if (!window.supabaseClient || !window.supabaseClient.isAuthenticated()) {
+            this.ui.showError('Please sign in to submit your score');
+            return;
+        }
+
+        try {
+            console.log('Submitting score:', {
+                score: this.score,
+                level: this.currentLevel,
+                time: this.lastLevelTime || 0,
+                user: window.supabaseClient.getUser()
+            });
+
+            await window.supabaseClient.submitScore(
+                this.score,
+                this.currentLevel,
+                this.lastLevelTime || 0
+            );
+
+            this.ui.showSuccess('Score submitted to leaderboard!');
+
+            // Hide submit button after successful submission
+            const submitBtn = document.getElementById('submitScoreBtn');
+            if (submitBtn) {
+                submitBtn.classList.add('hidden');
+            }
+
+            // Refresh leaderboard if it's open
+            if (window.leaderboard) {
+                window.leaderboard.onScoreSubmitted();
+            }
+
+        } catch (error) {
+            console.error('Error submitting score:', error);
+            console.error('Error details:', error.message, error.details);
+            this.ui.showError(`Failed to submit score: ${error.message}`);
+        }
+    }
+
+    updateSubmitScoreButton() {
+        const submitBtn = document.getElementById('submitScoreBtn');
+        if (!submitBtn) return;
+
+        if (window.supabaseClient && window.supabaseClient.isAuthenticated()) {
+            submitBtn.classList.remove('hidden');
+        } else {
+            submitBtn.classList.add('hidden');
+        }
+    }
+
+    async initializeSupabase() {
+        try {
+            if (window.supabaseClient && window.supabaseClient.isSupabaseConfigured()) {
+                await window.supabaseClient.initialize();
+
+                // Update UI based on auth state
+                const user = window.supabaseClient.getUser();
+                if (window.auth) {
+                    window.auth.updateAuthButtons(user);
+                }
+            }
+        } catch (error) {
+            console.warn('Supabase initialization failed:', error);
+        }
+    }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     window.game = new Game();
+
+    // Initialize Supabase
+    await window.game.initializeSupabase();
 });
