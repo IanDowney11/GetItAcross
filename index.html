@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get It Across - Chicken Crossing Game</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Game UI Overlay -->
+        <div id="gameUI">
+            <!-- HUD -->
+            <div id="hud" class="hidden">
+                <div id="levelDisplay">Level: <span id="levelNumber">1</span></div>
+                <div id="livesDisplay">Lives: <span id="livesNumber">5</span></div>
+                <div id="scoreDisplay">Score: <span id="scoreNumber">0</span></div>
+                <button id="pauseBtn" class="ui-button">⏸️</button>
+                <button id="muteBtn" class="ui-button">🔊</button>
+            </div>
+
+            <!-- Start Menu -->
+            <div id="startMenu" class="menu-screen">
+                <h1>Get It Across</h1>
+                <p>Help the chicken cross the road safely!</p>
+                <button id="startBtn" class="menu-button">Start Game</button>
+                <div class="controls-info">
+                    <p><strong>Desktop:</strong> Arrow keys or WASD</p>
+                    <p><strong>Mobile:</strong> Touch controls below</p>
+                </div>
+            </div>
+
+            <!-- Pause Menu -->
+            <div id="pauseMenu" class="menu-screen hidden">
+                <h2>Game Paused</h2>
+                <button id="resumeBtn" class="menu-button">Resume</button>
+                <button id="restartBtn" class="menu-button">Restart Level</button>
+                <button id="mainMenuBtn" class="menu-button">Main Menu</button>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="gameOverMenu" class="menu-screen hidden">
+                <h2>Game Over</h2>
+                <p>Final Score: <span id="finalScore">0</span></p>
+                <button id="restartGameBtn" class="menu-button">Play Again</button>
+                <button id="backToMenuBtn" class="menu-button">Main Menu</button>
+            </div>
+
+            <!-- Level Complete Screen -->
+            <div id="levelCompleteMenu" class="menu-screen hidden">
+                <h2>Level Complete!</h2>
+                <p>Score: <span id="levelScore">0</span></p>
+                <p>Bonus: <span id="timeBonus">0</span></p>
+                <button id="nextLevelBtn" class="menu-button">Next Level</button>
+            </div>
+        </div>
+
+        <!-- Touch Controls -->
+        <div id="touchControls" class="hidden">
+            <!-- D-Pad -->
+            <div id="dpad">
+                <button class="dpad-btn" id="upBtn" data-direction="up">↑</button>
+                <div class="dpad-middle">
+                    <button class="dpad-btn" id="leftBtn" data-direction="left">←</button>
+                    <button class="dpad-btn" id="rightBtn" data-direction="right">→</button>
+                </div>
+                <button class="dpad-btn" id="downBtn" data-direction="down">↓</button>
+            </div>
+
+            <!-- Move Forward Button -->
+            <button id="moveForwardBtn" class="action-btn">➡️<br>GO</button>
+        </div>
+    </div>
+
+    <!-- Game Scripts -->
+    <script src="src/utils.js"></script>
+    <script src="src/audio.js"></script>
+    <script src="src/input.js"></script>
+    <script src="src/graphics.js"></script>
+    <script src="src/player.js"></script>
+    <script src="src/vehicles.js"></script>
+    <script src="src/collision.js"></script>
+    <script src="src/levels.js"></script>
+    <script src="src/ui.js"></script>
+    <script src="src/game.js"></script>
+</body>
+</html>

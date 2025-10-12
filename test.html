@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Get It Across</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #2c3e50;
+            color: white;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+        .warning { color: #f39c12; }
+    </style>
+</head>
+<body>
+    <h1>Game Test Results</h1>
+
+    <div class="test-section">
+        <h2>File Structure Test</h2>
+        <div id="fileTest">Testing...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>JavaScript Loading Test</h2>
+        <div id="jsTest">Testing...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Canvas Support Test</h2>
+        <div id="canvasTest">Testing...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Touch Support Test</h2>
+        <div id="touchTest">Testing...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Audio Support Test</h2>
+        <div id="audioTest">Testing...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Game Classes Test</h2>
+        <div id="classTest">Testing...</div>
+    </div>
+
+    <script>
+        // Test file structure
+        function testFileStructure() {
+            const files = [
+                'src/utils.js',
+                'src/audio.js',
+                'src/input.js',
+                'src/graphics.js',
+                'src/player.js',
+                'src/vehicles.js',
+                'src/collision.js',
+                'src/levels.js',
+                'src/ui.js',
+                'src/game.js'
+            ];
+
+            let loadedCount = 0;
+            const totalFiles = files.length;
+
+            files.forEach(file => {
+                const script = document.createElement('script');
+                script.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === totalFiles) {
+                        document.getElementById('fileTest').innerHTML =
+                            `<span class="success">✓ All ${totalFiles} JavaScript files loaded successfully</span>`;
+                        testClasses();
+                    }
+                };
+                script.onerror = () => {
+                    document.getElementById('fileTest').innerHTML =
+                        `<span class="error">✗ Failed to load ${file}</span>`;
+                };
+                script.src = file;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Test JavaScript loading
+        function testJavaScript() {
+            const jsTest = document.getElementById('jsTest');
+            try {
+                // Test basic JavaScript features
+                const testArray = [1, 2, 3];
+                const testObject = { test: true };
+                const testFunction = () => 'test';
+
+                if (Array.isArray(testArray) && testObject.test && testFunction() === 'test') {
+                    jsTest.innerHTML = '<span class="success">✓ JavaScript is working correctly</span>';
+                } else {
+                    jsTest.innerHTML = '<span class="error">✗ JavaScript basic features failed</span>';
+                }
+            } catch (e) {
+                jsTest.innerHTML = `<span class="error">✗ JavaScript error: ${e.message}</span>`;
+            }
+        }
+
+        // Test Canvas support
+        function testCanvas() {
+            const canvasTest = document.getElementById('canvasTest');
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                if (ctx) {
+                    // Test basic canvas operations
+                    ctx.fillStyle = '#ff0000';
+                    ctx.fillRect(0, 0, 10, 10);
+                    canvasTest.innerHTML = '<span class="success">✓ Canvas 2D context is supported</span>';
+                } else {
+                    canvasTest.innerHTML = '<span class="error">✗ Canvas 2D context not supported</span>';
+                }
+            } catch (e) {
+                canvasTest.innerHTML = `<span class="error">✗ Canvas error: ${e.message}</span>`;
+            }
+        }
+
+        // Test Touch support
+        function testTouch() {
+            const touchTest = document.getElementById('touchTest');
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+            if (hasTouch) {
+                touchTest.innerHTML = '<span class="success">✓ Touch events are supported</span>';
+            } else {
+                touchTest.innerHTML = '<span class="warning">! Touch events not supported (desktop mode)</span>';
+            }
+        }
+
+        // Test Audio support
+        function testAudio() {
+            const audioTest = document.getElementById('audioTest');
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const audioCtx = new AudioContext();
+                    audioTest.innerHTML = '<span class="success">✓ Web Audio API is supported</span>';
+                    audioCtx.close();
+                } else {
+                    audioTest.innerHTML = '<span class="warning">! Web Audio API not supported</span>';
+                }
+            } catch (e) {
+                audioTest.innerHTML = `<span class="error">✗ Audio error: ${e.message}</span>`;
+            }
+        }
+
+        // Test game classes
+        function testClasses() {
+            const classTest = document.getElementById('classTest');
+            const requiredClasses = [
+                'Utils', 'Audio', 'Input', 'Graphics', 'Player',
+                'VehicleManager', 'Collision', 'LevelManager', 'UI', 'Game'
+            ];
+
+            const missingClasses = [];
+            const availableClasses = [];
+
+            requiredClasses.forEach(className => {
+                if (typeof window[className] === 'function') {
+                    availableClasses.push(className);
+                } else {
+                    missingClasses.push(className);
+                }
+            });
+
+            if (missingClasses.length === 0) {
+                classTest.innerHTML = `<span class="success">✓ All game classes loaded (${availableClasses.length})</span>`;
+            } else {
+                classTest.innerHTML = `<span class="error">✗ Missing classes: ${missingClasses.join(', ')}</span>`;
+            }
+        }
+
+        // Run tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testJavaScript();
+            testCanvas();
+            testTouch();
+            testAudio();
+            testFileStructure();
+        });
+    </script>
+</body>
+</html>

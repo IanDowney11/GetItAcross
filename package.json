@@ -1,0 +1,17 @@
+{
+  "name": "get-it-across",
+  "version": "1.0.0",
+  "description": "A 2D arcade-style chicken crossing game",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static files ready for deployment'",
+    "start": "npx serve ."
+  },
+  "keywords": ["game", "arcade", "chicken", "crossing", "2d"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  }
+}
