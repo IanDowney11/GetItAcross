@@ -4,6 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get It Across - Chicken Crossing Game</title>
+    <meta name="description" content="Help the chicken cross the road safely in this fun arcade game! Play through 5 unique levels with increasing difficulty.">
+    <meta name="keywords" content="chicken, crossing, game, arcade, mobile, browser, road">
+    <meta name="author" content="Get It Across Game">
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Get It Across - Chicken Crossing Game">
+    <meta name="description" content="Help the chicken cross the road safely in this fun arcade game!">
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/jpeg" sizes="32x32" href="Chicken.jpeg">
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="Chicken.jpeg">
+    <link rel="shortcut icon" href="Chicken.jpeg">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="57x57" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="60x60" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="72x72" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="76x76" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="114x114" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="120x120" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="144x144" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="152x152" href="Chicken.jpeg">
+    <link rel="apple-touch-icon" sizes="180x180" href="Chicken.jpeg">
+
+    <!-- Apple Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Get It Across">
+
+    <!-- Android/Chrome -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Get It Across">
+
+    <!-- Microsoft Tile -->
+    <meta name="msapplication-TileImage" content="Chicken.jpeg">
+    <meta name="msapplication-TileColor" content="#2c3e50">
+    <meta name="msapplication-navbutton-color" content="#3498db">
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="msapplication-navbutton-color" content="#3498db">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#3498db">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="Get It Across - Chicken Crossing Game">
+    <meta property="og:description" content="Help the chicken cross the road safely in this fun arcade game!">
+    <meta property="og:image" content="Chicken.jpeg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="Get It Across - Chicken Crossing Game">
+    <meta property="twitter:description" content="Help the chicken cross the road safely in this fun arcade game!">
+    <meta property="twitter:image" content="Chicken.jpeg">
+
     <link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
@@ -85,5 +146,37 @@
     <script src="src/levels.js"></script>
     <script src="src/ui.js"></script>
     <script src="src/game.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Handle install prompt for PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+
+            // Show install button or notification
+            console.log('PWA install prompt available');
+        });
+
+        // Handle PWA installation
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('PWA was installed');
+        });
+    </script>
 </body>
 </html>

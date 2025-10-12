@@ -32,10 +32,38 @@ Each level features unique visual themes and road textures:
 - **Mute Toggle**: Easy audio on/off control
 - **Volume Settings**: Separate controls for SFX and music
 
+### Progressive Web App (PWA)
+- **Installable**: Add to homescreen on mobile and desktop
+- **Custom Icon**: Cute chicken logo for app icon
+- **Offline Play**: Works without internet after first load
+- **Fast Loading**: Service worker caching for instant startup
+- **Native Feel**: Full-screen experience when installed
+
 ## 🚀 Quick Start
 
 ### Play Online
 The game is deployed and ready to play at your Vercel URL after deployment.
+
+### Install as App
+Once deployed, you can install the game as a native app:
+
+**On Mobile (iOS/Android):**
+1. Open the game in Safari (iOS) or Chrome (Android)
+2. Tap the share button
+3. Select "Add to Home Screen"
+4. The chicken icon will appear on your homescreen!
+
+**On Desktop (Chrome/Edge):**
+1. Open the game in Chrome or Edge
+2. Look for the install icon in the address bar
+3. Click "Install Get It Across"
+4. The game will open as a standalone app
+
+**Features when installed:**
+- Works offline after first load
+- Fast startup with cached resources
+- Full-screen gaming experience
+- Native app icon with chicken logo
 
 ### Local Development
 
