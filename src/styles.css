@@ -35,15 +35,17 @@ body {
     height: 100%;
     display: block;
     background: #2d5a3d;
-    pointer-events: none;
+    pointer-events: none !important;
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 
 /* When game is active, allow canvas interactions */
 body.game-active #gameCanvas {
-    pointer-events: auto;
+    pointer-events: auto !important;
+    z-index: 10;
 }
 
 #gameUI {
@@ -144,10 +146,11 @@ body.game-active #gameCanvas {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 1000;
     color: white;
     text-align: center;
     padding: 20px;
+    pointer-events: auto;
 }
 
 .menu-screen h1 {

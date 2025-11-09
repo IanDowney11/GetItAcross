@@ -790,15 +790,54 @@ class Game3D {
 
 // Initialize game when DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, setting up start button...');
+
+    // Touch debug counter
+    const touchDebug = document.getElementById('touchDebug');
+    const touchCount = document.getElementById('touchCount');
+    let touches = 0;
+
+    // Show debug on any touch
+    document.addEventListener('touchstart', () => {
+        touches++;
+        if (touchDebug) {
+            touchDebug.style.display = 'block';
+            if (touchCount) touchCount.textContent = touches;
+        }
+        console.log('Touch detected anywhere on page:', touches);
+    });
+
     // Wait for start button
     const startBtn = document.getElementById('startBtn');
     if (startBtn) {
-        startBtn.addEventListener('click', () => {
-            window.game3d = new Game3D();
+        console.log('Start button found, attaching event listeners');
+
+        // Add multiple event types for better Safari compatibility
+        const startGame = (e) => {
+            console.log('Start button clicked!', e.type);
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!window.game3d) {
+                console.log('Initializing game...');
+                window.game3d = new Game3D();
+            }
+        };
+
+        startBtn.addEventListener('click', startGame, { passive: false });
+        startBtn.addEventListener('touchend', startGame, { passive: false });
+
+        // Visual feedback test
+        startBtn.addEventListener('touchstart', (e) => {
+            console.log('Touch detected on start button');
+            startBtn.style.transform = 'scale(0.95)';
+        });
+
+        startBtn.addEventListener('touchend', () => {
+            startBtn.style.transform = '';
         });
     } else {
-        // Auto-start if no menu
-        window.game3d = new Game3D();
+        console.error('Start button not found!');
     }
 });
 
