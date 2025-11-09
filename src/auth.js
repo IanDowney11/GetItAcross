@@ -121,10 +121,14 @@ class Auth {
 
         try {
             if (!window.supabaseClient.isSupabaseConfigured()) {
-                throw new Error('Supabase is not configured. Please set up your Supabase credentials.');
+                throw new Error('Authentication service is not configured. Please contact the administrator.');
             }
 
-            await window.supabaseClient.initialize();
+            const initialized = await window.supabaseClient.initialize();
+
+            if (!initialized) {
+                throw new Error('Authentication service is currently unavailable. Please try again later.');
+            }
 
             if (this.isSignUp) {
                 await window.supabaseClient.signUp(email, password, username);
@@ -132,7 +136,7 @@ class Auth {
             } else {
                 await window.supabaseClient.signIn(email, password);
                 this.showSuccess('Signed in successfully!');
-                this.hide();
+                setTimeout(() => this.hide(), 1500);
             }
 
         } catch (error) {
@@ -234,8 +238,14 @@ class Auth {
         if (message.includes('Email not confirmed')) {
             return 'Please check your email and click the confirmation link.';
         }
-        if (message.includes('Supabase not configured')) {
-            return 'Authentication is not available. Please try again later.';
+        if (message.includes('Supabase not configured') || message.includes('not configured')) {
+            return 'Authentication service is not configured. Please contact the administrator.';
+        }
+        if (message.includes('unavailable') || message.includes('Failed to fetch') || message.includes('ERR_FAILED')) {
+            return 'Authentication service is currently unavailable. You can still play the game without signing in!';
+        }
+        if (message.includes('Network request failed') || message.includes('network')) {
+            return 'Network error. Please check your internet connection and try again.';
         }
 
         return message;
