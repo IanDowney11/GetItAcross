@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get It Across - Chicken Crossing Game</title>
-    <meta name="description" content="Help the chicken cross the road safely in this fun arcade game! Play through 5 unique levels with increasing difficulty.">
-    <meta name="keywords" content="chicken, crossing, game, arcade, mobile, browser, road">
-    <meta name="author" content="Get It Across Game">
+    <title>The Chicken Game - 3D Crossing Adventure</title>
+    <meta name="description" content="Help the chicken cross the road safely in this fun 3D arcade game! Collect power-ups and avoid obstacles!">
+    <meta name="keywords" content="chicken, crossing, game, arcade, mobile, browser, road, 3d">
+    <meta name="author" content="The Chicken Game">
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
 
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Get It Across - Chicken Crossing Game">
-    <meta name="description" content="Help the chicken cross the road safely in this fun arcade game!">
+    <meta name="title" content="The Chicken Game - 3D Crossing Adventure">
+    <meta name="description" content="Help the chicken cross the road safely in this fun 3D arcade game! Collect power-ups and avoid obstacles!">
 
     <!-- Favicon and App Icons -->
     <link rel="icon" type="image/jpeg" sizes="32x32" href="Chicken.jpeg">
@@ -35,11 +35,11 @@
     <!-- Apple Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Get It Across">
+    <meta name="apple-mobile-web-app-title" content="The Chicken Game">
 
     <!-- Android/Chrome -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Get It Across">
+    <meta name="application-name" content="The Chicken Game">
 
     <!-- Microsoft Tile -->
     <meta name="msapplication-TileImage" content="Chicken.jpeg">
@@ -54,15 +54,15 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="">
-    <meta property="og:title" content="Get It Across - Chicken Crossing Game">
-    <meta property="og:description" content="Help the chicken cross the road safely in this fun arcade game!">
+    <meta property="og:title" content="The Chicken Game - 3D Crossing Adventure">
+    <meta property="og:description" content="Help the chicken cross the road safely in this fun 3D arcade game! Collect power-ups and avoid obstacles!">
     <meta property="og:image" content="Chicken.jpeg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="">
-    <meta property="twitter:title" content="Get It Across - Chicken Crossing Game">
-    <meta property="twitter:description" content="Help the chicken cross the road safely in this fun arcade game!">
+    <meta property="twitter:title" content="The Chicken Game - 3D Crossing Adventure">
+    <meta property="twitter:description" content="Help the chicken cross the road safely in this fun 3D arcade game! Collect power-ups and avoid obstacles!">
     <meta property="twitter:image" content="Chicken.jpeg">
 
     <link rel="stylesheet" href="src/styles.css">
@@ -79,8 +79,10 @@
                     <div id="levelDisplay">Level: <span id="levelNumber">1</span></div>
                     <div id="livesDisplay">Lives: <span id="livesNumber">5</span></div>
                     <div id="scoreDisplay">Score: <span id="scoreNumber">0</span></div>
+                    <div id="pointsDisplay">Points: <span id="pointsNumber">0</span></div>
                 </div>
                 <div class="hud-right">
+                    <button id="shopBtn" class="ui-button">🛒</button>
                     <button id="leaderboardBtn" class="ui-button">🏆</button>
                     <button id="authBtn" class="ui-button">👤</button>
                     <button id="pauseBtn" class="ui-button">⏸️</button>
@@ -90,13 +92,15 @@
 
             <!-- Start Menu -->
             <div id="startMenu" class="menu-screen">
-                <h1>Get It Across</h1>
-                <p>Help the chicken cross the road safely!</p>
+                <h1>The Chicken Game</h1>
+                <p>Help the chicken cross the road safely in this 3D adventure!</p>
                 <button id="startBtn" class="menu-button">Start Game</button>
+                <button id="menuShopBtn" class="menu-button">🛒 Shop</button>
                 <button id="viewLeaderboardBtn" class="menu-button">🏆 Leaderboard</button>
                 <button id="loginBtn" class="menu-button" id="mainAuthBtn">👤 Sign In</button>
                 <div class="controls-info">
-                    <p><strong>Desktop:</strong> Arrow keys or WASD</p>
+                    <p><strong>Desktop:</strong> Arrow keys or WASD to move</p>
+                    <p><strong>Jump:</strong> Space or J</p>
                     <p><strong>Mobile:</strong> Touch controls below</p>
                 </div>
             </div>
@@ -106,6 +110,7 @@
                 <h2>Game Paused</h2>
                 <button id="resumeBtn" class="menu-button">Resume</button>
                 <button id="restartBtn" class="menu-button">Restart Level</button>
+                <button id="pauseShopBtn" class="menu-button">🛒 Shop</button>
                 <button id="pauseLeaderboardBtn" class="menu-button">🏆 Leaderboard</button>
                 <button id="mainMenuBtn" class="menu-button">Main Menu</button>
             </div>
@@ -157,15 +162,7 @@
             <!-- Leaderboard Modal -->
             <div id="leaderboardModal" class="menu-screen hidden">
                 <div class="leaderboard-container">
-                    <h2>🏆 Leaderboard</h2>
-                    <div class="leaderboard-filters">
-                        <button class="filter-btn active" data-filter="all">All Levels</button>
-                        <button class="filter-btn" data-filter="1">Level 1</button>
-                        <button class="filter-btn" data-filter="2">Level 2</button>
-                        <button class="filter-btn" data-filter="3">Level 3</button>
-                        <button class="filter-btn" data-filter="4">Level 4</button>
-                        <button class="filter-btn" data-filter="5">Level 5</button>
-                    </div>
+                    <h2>🏆 Leaderboard - Top Scores</h2>
                     <div id="leaderboardContent">
                         <div class="loading">Loading leaderboard...</div>
                     </div>
@@ -175,6 +172,23 @@
                         <p>Global Rank: <span id="userRank">-</span></p>
                     </div>
                     <button id="leaderboardCloseBtn" class="menu-button">Close</button>
+                </div>
+            </div>
+
+            <!-- Shop Modal -->
+            <div id="shopModal" class="menu-screen hidden">
+                <div class="shop-container">
+                    <div class="shop-header">
+                        <h2>🛒 Chicken Shop</h2>
+                        <div class="shop-points">
+                            <span>💰</span>
+                            <span class="shop-points-value" id="shopPoints">0</span>
+                        </div>
+                    </div>
+                    <div id="skinsContainer">
+                        <div class="loading">Loading skins...</div>
+                    </div>
+                    <button id="shopCloseBtn" class="menu-button">Close</button>
                 </div>
             </div>
         </div>
@@ -193,23 +207,21 @@
 
             <!-- Move Forward Button -->
             <button id="moveForwardBtn" class="action-btn">➡️<br>GO</button>
+
+            <!-- Jump Button -->
+            <button id="jumpBtn" class="action-btn" style="right: 20px; bottom: 120px;">⬆️<br>JUMP</button>
         </div>
     </div>
 
     <!-- Game Scripts -->
-    <script src="src/utils.js"></script>
-    <script src="src/audio.js"></script>
-    <script src="src/input.js"></script>
-    <script src="src/graphics.js"></script>
-    <script src="src/player.js"></script>
-    <script src="src/vehicles.js"></script>
-    <script src="src/collision.js"></script>
-    <script src="src/levels.js"></script>
+    <!-- Legacy systems (shop, auth, leaderboard) -->
     <script src="src/supabase.js"></script>
     <script src="src/auth.js"></script>
     <script src="src/leaderboard.js"></script>
-    <script src="src/ui.js"></script>
-    <script src="src/game.js"></script>
+    <script src="src/shop.js"></script>
+
+    <!-- 3D Game using Three.js and ES6 modules -->
+    <script type="module" src="src/main.js"></script>
 
     <!-- Service Worker Registration -->
     <script>

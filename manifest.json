@@ -1,7 +1,7 @@
 {
-  "name": "Get It Across - Chicken Crossing Game",
-  "short_name": "Get It Across",
-  "description": "Help the chicken cross the road safely in this fun arcade game!",
+  "name": "The Chicken Game - 3D Crossing Adventure",
+  "short_name": "Chicken Game",
+  "description": "Help the chicken cross the road safely in this fun 3D arcade game! Collect power-ups and avoid obstacles!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#2c3e50",
@@ -103,7 +103,7 @@
       "sizes": "1280x720",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "Get It Across gameplay"
+      "label": "The Chicken Game gameplay"
     }
   ]
 }

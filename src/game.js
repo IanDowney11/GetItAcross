@@ -86,6 +86,17 @@ class Game {
         document.getElementById('viewLeaderboardBtn').addEventListener('click', () => this.showLeaderboard());
         document.getElementById('pauseLeaderboardBtn').addEventListener('click', () => this.showLeaderboard());
         document.getElementById('submitScoreBtn').addEventListener('click', () => this.submitScore());
+
+        // Shop buttons
+        document.getElementById('shopBtn').addEventListener('click', () => this.showShop());
+        document.getElementById('menuShopBtn').addEventListener('click', () => this.showShop());
+        document.getElementById('pauseShopBtn').addEventListener('click', () => this.showShop());
+    }
+
+    showShop() {
+        if (window.shop) {
+            window.shop.show();
+        }
     }
 
     startGame() {
@@ -159,6 +170,12 @@ class Game {
         this.score += totalScore;
         this.gameState = 'levelComplete';
         this.lastLevelTime = levelTime;
+
+        // Award shop points (10% of score as points)
+        const pointsEarned = Math.floor(totalScore / 10);
+        if (window.shop) {
+            window.shop.addPoints(pointsEarned);
+        }
 
         this.ui.showLevelComplete(totalScore, timeBonus);
         this.audio.playSound('levelComplete');

@@ -1,20 +1,31 @@
 {
-  "name": "get-it-across",
+  "name": "the-chicken-game",
   "version": "1.0.0",
-  "description": "A 2D arcade-style chicken crossing game",
+  "description": "The Chicken Game - A 3D arcade-style chicken crossing adventure",
   "main": "index.html",
   "scripts": {
-    "dev": "npx serve .",
-    "build": "echo 'Static files ready for deployment'",
-    "start": "npx serve ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
   },
-  "keywords": ["game", "arcade", "chicken", "crossing", "2d", "leaderboard", "pwa"],
+  "keywords": [
+    "game",
+    "arcade",
+    "chicken",
+    "crossing",
+    "2d",
+    "leaderboard",
+    "pwa"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@supabase/supabase-js": "^2.38.0"
+    "@supabase/supabase-js": "^2.38.0",
+    "three": "^0.181.0"
   },
   "devDependencies": {
-    "serve": "^14.0.0"
+    "serve": "^14.0.0",
+    "vite": "^7.2.2"
   }
 }

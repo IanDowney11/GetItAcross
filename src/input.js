@@ -57,12 +57,26 @@ class Input {
         if (moveForwardBtn) {
             moveForwardBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                this.onMoveForward();
+                this.touches['forward'] = true;
             }, { passive: false });
 
-            moveForwardBtn.addEventListener('click', (e) => {
+            moveForwardBtn.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                this.onMoveForward();
+                this.touches['forward'] = false;
+            }, { passive: false });
+
+            moveForwardBtn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.touches['forward'] = true;
+            });
+
+            moveForwardBtn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.touches['forward'] = false;
+            });
+
+            moveForwardBtn.addEventListener('mouseleave', (e) => {
+                this.touches['forward'] = false;
             });
         }
     }
@@ -194,7 +208,7 @@ class Input {
             movement.moving = true;
         }
 
-        if (this.isKeyPressed('ArrowRight') || this.isKeyPressed('KeyD') || this.isTouchPressed('right')) {
+        if (this.isKeyPressed('ArrowRight') || this.isKeyPressed('KeyD') || this.isTouchPressed('right') || this.isTouchPressed('forward')) {
             movement.x += 1;
             movement.moving = true;
         }

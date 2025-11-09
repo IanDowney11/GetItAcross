@@ -183,18 +183,48 @@ class Graphics {
     }
 
     drawObsidianTexture(x, y, width, height) {
-        this.drawGradientRect(x, y, width, height, [
-            { position: 0, color: '#1a001a' },
-            { position: 0.5, color: '#0d0d0d' },
-            { position: 1, color: '#000000' }
-        ]);
+        // Rainbow road effect with animated stripes
+        const numStripes = 7;
+        const stripeHeight = height / numStripes;
+        const rainbowColors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3'];
 
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < numStripes; i++) {
+            const stripeY = y + i * stripeHeight;
+            const color = rainbowColors[i % rainbowColors.length];
+
+            // Draw gradient stripe
+            this.drawGradientRect(x, stripeY, width, stripeHeight, [
+                { position: 0, color: this.adjustBrightness(color, -30) },
+                { position: 0.5, color: color },
+                { position: 1, color: this.adjustBrightness(color, -30) }
+            ]);
+        }
+
+        // Add sparkle effects
+        for (let i = 0; i < 30; i++) {
             const px = x + Math.random() * width;
             const py = y + Math.random() * height;
-            const size = Math.random() * 2 + 0.5;
-            this.drawCircle(px, py, size, '#4B0082');
+            const size = Math.random() * 3 + 1;
+            this.drawCircle(px, py, size, '#FFFFFF');
         }
+
+        // Add shimmer effect
+        this.ctx.globalAlpha = 0.3;
+        for (let i = 0; i < 15; i++) {
+            const px = x + Math.random() * width;
+            const py = y + Math.random() * height;
+            const size = Math.random() * 5 + 2;
+            this.drawStar(px, py, size, '#FFFFFF');
+        }
+        this.ctx.globalAlpha = 1;
+    }
+
+    adjustBrightness(color, amount) {
+        const hex = color.replace('#', '');
+        const r = Math.max(0, Math.min(255, parseInt(hex.substr(0, 2), 16) + amount));
+        const g = Math.max(0, Math.min(255, parseInt(hex.substr(2, 2), 16) + amount));
+        const b = Math.max(0, Math.min(255, parseInt(hex.substr(4, 2), 16) + amount));
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
 
     drawStar(x, y, radius, color) {
@@ -218,24 +248,52 @@ class Graphics {
         this.ctx.fill();
     }
 
-    drawChicken(x, y, size = 20, direction = 'right') {
+    drawChicken(x, y, size = 20, direction = 'right', skin = null) {
         const headSize = size * 0.4;
         const bodyWidth = size * 0.8;
         const bodyHeight = size * 0.6;
 
-        this.drawCircle(x, y + bodyHeight * 0.3, bodyWidth / 2, '#FFFFFF');
-        this.drawCircle(x + (direction === 'right' ? bodyWidth * 0.3 : -bodyWidth * 0.3), y, headSize, '#FFFFFF');
+        // Default colors (classic white chicken)
+        const colors = skin && skin.colors ? skin.colors : {
+            body: '#FFFFFF',
+            head: '#FFFFFF',
+            beak: '#FFA500',
+            eye: '#000000',
+            feet: '#FFA500',
+            comb: '#FF0000'
+        };
 
+        // Body
+        this.drawCircle(x, y + bodyHeight * 0.3, bodyWidth / 2, colors.body);
+
+        // Head
+        this.drawCircle(x + (direction === 'right' ? bodyWidth * 0.3 : -bodyWidth * 0.3), y, headSize, colors.head);
+
+        // Comb (on top of head)
+        const combX = x + (direction === 'right' ? bodyWidth * 0.3 : -bodyWidth * 0.3);
+        const combY = y - headSize;
+        this.ctx.save();
+        this.ctx.fillStyle = colors.comb;
+        this.ctx.beginPath();
+        this.ctx.arc(combX - 2, combY, 3, 0, Math.PI * 2);
+        this.ctx.arc(combX, combY - 1, 2.5, 0, Math.PI * 2);
+        this.ctx.arc(combX + 2, combY, 3, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.restore();
+
+        // Beak
         const beakX = x + (direction === 'right' ? bodyWidth * 0.5 : -bodyWidth * 0.5);
         const beakY = y;
-        this.drawRect(beakX, beakY - 2, direction === 'right' ? 6 : -6, 4, '#FFA500');
+        this.drawRect(beakX, beakY - 2, direction === 'right' ? 6 : -6, 4, colors.beak);
 
+        // Eye
         const eyeX = x + (direction === 'right' ? bodyWidth * 0.2 : -bodyWidth * 0.2);
         const eyeY = y - 3;
-        this.drawCircle(eyeX, eyeY, 2, '#000');
+        this.drawCircle(eyeX, eyeY, 2, colors.eye);
 
-        this.drawRect(x - 3, y + bodyHeight * 0.7, 6, 8, '#FFA500');
-        this.drawRect(x - 8, y + bodyHeight * 0.7, 6, 8, '#FFA500');
+        // Feet
+        this.drawRect(x - 3, y + bodyHeight * 0.7, 6, 8, colors.feet);
+        this.drawRect(x - 8, y + bodyHeight * 0.7, 6, 8, colors.feet);
     }
 
     drawVehicle(x, y, width, height, type = 'car', color = '#FF0000') {

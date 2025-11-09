@@ -1,6 +1,5 @@
 class Leaderboard {
     constructor() {
-        this.currentFilter = 'all';
         this.leaderboardData = [];
         this.userStats = null;
         this.isLoading = false;
@@ -18,13 +17,6 @@ class Leaderboard {
     }
 
     bindEvents() {
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.setFilter(e.target.dataset.filter);
-            });
-        });
-
         // Close button
         this.elements.closeBtn.addEventListener('click', () => {
             this.hide();
@@ -51,19 +43,6 @@ class Leaderboard {
         this.elements.modal.classList.add('hidden');
     }
 
-    setFilter(filter) {
-        this.currentFilter = filter;
-
-        // Update active filter button
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-
-        // Reload leaderboard with new filter
-        this.loadLeaderboard();
-    }
-
     async loadLeaderboard() {
         if (this.isLoading) return;
 
@@ -78,8 +57,7 @@ class Leaderboard {
 
             await window.supabaseClient.initialize();
 
-            const levelFilter = this.currentFilter === 'all' ? null : parseInt(this.currentFilter);
-            const data = await window.supabaseClient.getLeaderboard(20, 0, levelFilter);
+            const data = await window.supabaseClient.getLeaderboard(20);
 
             this.leaderboardData = data;
             this.renderLeaderboard();
@@ -162,10 +140,9 @@ class Leaderboard {
     }
 
     showEmpty() {
-        const filterText = this.currentFilter === 'all' ? 'any level' : `level ${this.currentFilter}`;
         this.elements.content.innerHTML = `
             <div class="empty-leaderboard">
-                <p>No scores found for ${filterText}.</p>
+                <p>No scores found yet.</p>
                 <p>Be the first to submit a score!</p>
             </div>
         `;

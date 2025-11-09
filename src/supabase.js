@@ -220,28 +220,36 @@ class SupabaseClient {
     return data;
   }
 
-  async getLeaderboard(limit = 10, levelFilter = null) {
+  async getLeaderboard(limit = 10) {
     if (!this.supabase) {
       throw new Error("Supabase not initialized");
     }
 
-    let query = this.supabase
+    // Get all scores ordered by score descending
+    const { data, error } = await this.supabase
       .from("leaderboard")
       .select("*")
-      .order("score", { ascending: false })
-      .limit(limit);
-
-    if (levelFilter) {
-      query = query.eq("level_reached", levelFilter);
-    }
-
-    const { data, error } = await query;
+      .order("score", { ascending: false });
 
     if (error) {
       throw error;
     }
 
-    return data;
+    // Filter to show only the best score per user
+    const userBestScores = new Map();
+
+    for (const entry of data) {
+      if (!userBestScores.has(entry.user_id)) {
+        userBestScores.set(entry.user_id, entry);
+      }
+    }
+
+    // Convert map to array and sort by score, then limit
+    const uniqueUserScores = Array.from(userBestScores.values())
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit);
+
+    return uniqueUserScores;
   }
 
   async getUserBestScore() {

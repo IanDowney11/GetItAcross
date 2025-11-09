@@ -38,12 +38,12 @@ class LevelManager {
                 description: 'Crystalline diamond streets with intense traffic'
             },
             5: {
-                name: 'Obsidian Expressway',
+                name: 'Rainbow Road',
                 type: 'obsidian',
-                backgroundColor: '#1a001a',
-                roadColor: '#0d0d0d',
-                grassColor: '#006400',
-                description: 'Dark obsidian highways with extreme traffic'
+                backgroundColor: '#4B0082',
+                roadColor: '#9400D3',
+                grassColor: '#00FF00',
+                description: 'Magical rainbow highways with extreme traffic'
             }
         };
 

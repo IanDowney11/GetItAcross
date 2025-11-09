@@ -6,8 +6,13 @@ class Player {
         this.x = x;
         this.y = y;
         this.size = 20;
+        this.baseSpeed = 150;
         this.speed = 150;
         this.direction = 'right';
+
+        // Load equipped skin from shop
+        this.skin = window.shop ? window.shop.getEquippedSkin() : null;
+        this.applySpeedBonus();
 
         this.animation = {
             frame: 0,
@@ -34,6 +39,22 @@ class Player {
         this.moveDelay = 100;
     }
 
+    /**
+     * Update the player's skin
+     */
+    updateSkin(skin) {
+        this.skin = skin;
+        this.applySpeedBonus();
+    }
+
+    /**
+     * Apply speed bonus from equipped skin
+     */
+    applySpeedBonus() {
+        const speedMultiplier = this.skin && this.skin.speedMultiplier ? this.skin.speedMultiplier : 1.0;
+        this.speed = this.baseSpeed * speedMultiplier;
+    }
+
     update(deltaTime) {
         this.handleInput(deltaTime);
         this.updateAnimation(deltaTime);
@@ -47,7 +68,7 @@ class Player {
         const movement = this.game.input.getMovementInput();
         const currentTime = Date.now();
 
-        if (movement.moving && currentTime - this.lastMoveTime > this.moveDelay) {
+        if (movement.moving) {
             const moveDistance = this.speed * (deltaTime / 1000);
 
             if (movement.x !== 0) {
@@ -58,12 +79,14 @@ class Player {
                 this.moveVertical(movement.y * moveDistance);
             }
 
-            if (movement.moving) {
-                this.animation.walking = true;
+            this.animation.walking = true;
+
+            // Only play sound at intervals to avoid spam
+            if (currentTime - this.lastMoveTime > this.moveDelay) {
                 this.game.audio.playSound('move');
                 this.lastMoveTime = currentTime;
             }
-        } else if (!movement.moving) {
+        } else {
             this.animation.walking = false;
         }
     }
@@ -206,57 +229,34 @@ class Player {
     }
 
     renderChicken(graphics, x, y, size) {
-        const headSize = size * 0.4;
         const bodyWidth = size * 0.8;
         const bodyHeight = size * 0.6;
 
-        graphics.drawCircle(x, y + bodyHeight * 0.3, bodyWidth / 2, '#FFFFFF');
-
+        // Draw shadow
         const shadowOffset = 3;
         graphics.ctx.globalAlpha = 0.3;
         graphics.drawCircle(x + shadowOffset, y + bodyHeight * 0.3 + shadowOffset, bodyWidth / 2, '#000000');
         graphics.ctx.globalAlpha = 1;
 
-        graphics.drawCircle(x + (this.direction === 'right' ? bodyWidth * 0.3 : -bodyWidth * 0.3), y, headSize, '#FFFFFF');
+        // Use the graphics.drawChicken method with skin
+        graphics.drawChicken(x, y, size, this.direction, this.skin);
 
-        graphics.drawCircle(x + (this.direction === 'right' ? bodyWidth * 0.3 : -bodyWidth * 0.3), y, headSize - 2, '#FFF8DC');
-
-        const beakX = x + (this.direction === 'right' ? bodyWidth * 0.5 : -bodyWidth * 0.5);
-        const beakY = y;
-        const beakWidth = this.direction === 'right' ? 6 : -6;
-        graphics.drawRect(beakX, beakY - 2, beakWidth, 4, '#FFA500');
-
-        const eyeX = x + (this.direction === 'right' ? bodyWidth * 0.2 : -bodyWidth * 0.2);
-        const eyeY = y - 3;
-        graphics.drawCircle(eyeX, eyeY, 2, '#000');
-
-        const leftLegX = x - 3;
-        const rightLegX = x + 3;
-        const legY = y + bodyHeight * 0.7;
-        const legHeight = 8;
-
-        if (this.animation.walking) {
-            const legOffset = Math.sin(Date.now() / 100) * 2;
-            graphics.drawRect(leftLegX, legY + legOffset, 3, legHeight, '#FFA500');
-            graphics.drawRect(rightLegX, legY - legOffset, 3, legHeight, '#FFA500');
-        } else {
-            graphics.drawRect(leftLegX, legY, 3, legHeight, '#FFA500');
-            graphics.drawRect(rightLegX, legY, 3, legHeight, '#FFA500');
-        }
-
+        // Render feather particles when walking
         if (this.animation.walking && Math.random() < 0.3) {
             this.renderFeathers(graphics, x, y);
         }
     }
 
     renderFeathers(graphics, x, y) {
+        const featherColor = this.skin && this.skin.colors ? this.skin.colors.body : '#FFFFFF';
+
         for (let i = 0; i < 3; i++) {
             const featherX = x + (Math.random() - 0.5) * 20;
             const featherY = y + (Math.random() - 0.5) * 20;
             const featherSize = Math.random() * 3 + 1;
 
             graphics.ctx.globalAlpha = 0.5;
-            graphics.drawCircle(featherX, featherY, featherSize, '#FFFFFF');
+            graphics.drawCircle(featherX, featherY, featherSize, featherColor);
             graphics.ctx.globalAlpha = 1;
         }
     }
@@ -264,6 +264,7 @@ class Player {
     renderTrail(graphics) {
         const trailLength = 5;
         const trailSpacing = 8;
+        const trailColor = this.skin && this.skin.colors ? this.skin.colors.body : '#FFFFFF';
 
         for (let i = 1; i <= trailLength; i++) {
             const alpha = (trailLength - i) / trailLength * 0.3;
@@ -271,7 +272,7 @@ class Player {
             const trailY = this.y;
 
             graphics.ctx.globalAlpha = alpha;
-            graphics.drawCircle(trailX, trailY, this.size / 3, '#FFFFFF');
+            graphics.drawCircle(trailX, trailY, this.size / 3, trailColor);
         }
 
         graphics.ctx.globalAlpha = 1;
