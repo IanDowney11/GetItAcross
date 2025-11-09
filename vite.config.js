@@ -6,6 +6,9 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
+      input: {
+        main: 'index.html'
+      },
       output: {
         manualChunks: {
           'three': ['three'],
@@ -13,9 +16,12 @@ export default defineConfig({
         }
       }
     },
+    // Copy public assets
+    copyPublicDir: true,
     // Increase chunk size warning limit for Three.js
     chunkSizeWarningLimit: 1000
   },
+  publicDir: 'public',
   server: {
     port: 5176
   }

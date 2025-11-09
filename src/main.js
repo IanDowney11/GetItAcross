@@ -179,12 +179,6 @@ class Game3D {
         this.lastTime = performance.now();
         this.gameLoop();
 
-        // Show touch controls on mobile
-        const touchControls = document.getElementById('touchControls');
-        if (touchControls && window.innerWidth < 768) {
-            touchControls.classList.remove('hidden');
-        }
-
         // Hide menus
         const startMenu = document.getElementById('startMenu');
         if (startMenu) startMenu.classList.add('hidden');
@@ -791,6 +785,18 @@ class Game3D {
 // Initialize game when DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, setting up start button...');
+
+    // Show touch controls on touch devices (iPad, mobile)
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    console.log('Touch device detected:', isTouchDevice);
+
+    if (isTouchDevice) {
+        const touchControls = document.getElementById('touchControls');
+        if (touchControls) {
+            touchControls.classList.remove('hidden');
+            console.log('Touch controls enabled');
+        }
+    }
 
     // Touch debug counter
     const touchDebug = document.getElementById('touchDebug');
