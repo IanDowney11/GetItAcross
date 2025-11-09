@@ -1,6 +1,6 @@
 {
   "name": "the-chicken-game",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The Chicken Game - A 3D arcade-style chicken crossing adventure",
   "main": "index.html",
   "scripts": {
