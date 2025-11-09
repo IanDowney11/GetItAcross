@@ -192,6 +192,9 @@ class Game3D {
         const hud = document.getElementById('hud');
         if (hud) hud.classList.remove('hidden');
 
+        // Add game-active class to enable canvas pointer events
+        document.body.classList.add('game-active');
+
         // Update HUD
         this.updateHUD();
 
@@ -222,10 +225,12 @@ class Game3D {
         if (this.isRunning) {
             // Pause the game
             this.pause();
+            document.body.classList.remove('game-active');
             if (pauseMenu) pauseMenu.classList.remove('hidden');
         } else {
             // Resume the game
             this.resume();
+            document.body.classList.add('game-active');
             if (pauseMenu) pauseMenu.classList.add('hidden');
         }
     }
@@ -558,6 +563,9 @@ class Game3D {
     gameOver() {
         this.isRunning = false;
 
+        // Remove game-active class
+        document.body.classList.remove('game-active');
+
         // Show game over screen
         const gameOverMenu = document.getElementById('gameOverMenu');
         const finalScore = document.getElementById('finalScore');
@@ -578,6 +586,9 @@ class Game3D {
         // Don't stop the game loop, just pause game logic
         const wasRunning = this.isRunning;
         this.isRunning = false;
+
+        // Remove game-active class
+        document.body.classList.remove('game-active');
 
         // Calculate time bonus
         let timeBonus = Math.floor(Math.random() * 100) + 50;
@@ -623,6 +634,10 @@ class Game3D {
         // Resume game
         this.isRunning = true;
         this.pausedForMenu = false;
+
+        // Re-enable canvas interactions
+        document.body.classList.add('game-active');
+
         this.updateHUD();
 
         console.log(`Level ${this.level} started! Goal: ${this.levelGoalZ}, Current: ${this.playerPosition.z}`);
