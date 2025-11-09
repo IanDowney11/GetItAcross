@@ -209,6 +209,22 @@ class Game3D {
             resumeBtn.addEventListener('click', () => this.togglePause());
         }
 
+        // Setup restart level button from pause menu
+        const restartBtn = document.getElementById('restartBtn');
+        if (restartBtn) {
+            restartBtn.addEventListener('click', () => {
+                location.reload(); // Reload to restart level
+            });
+        }
+
+        // Setup main menu button from pause menu
+        const mainMenuBtn = document.getElementById('mainMenuBtn');
+        if (mainMenuBtn) {
+            mainMenuBtn.addEventListener('click', () => {
+                location.reload(); // Reload to go back to start menu
+            });
+        }
+
         // Store reference to game for shop integration
         window.game3d = this;
     }
@@ -572,6 +588,14 @@ class Game3D {
         if (restartGameBtn) {
             restartGameBtn.onclick = () => {
                 location.reload(); // Simple reload to restart
+            };
+        }
+
+        // Setup back to menu button
+        const backToMenuBtn = document.getElementById('backToMenuBtn');
+        if (backToMenuBtn) {
+            backToMenuBtn.onclick = () => {
+                location.reload(); // Reload to go back to start menu
             };
         }
     }
