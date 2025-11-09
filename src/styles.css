@@ -209,6 +209,21 @@ body.game-active #gameCanvas {
     margin: 5px 0;
 }
 
+.version-info {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: monospace;
+    font-weight: bold;
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
 /* Touch Controls */
 #touchControls {
     position: absolute;
