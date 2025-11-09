@@ -222,11 +222,11 @@
     </div>
 
     <!-- Game Scripts -->
-    <!-- Legacy systems (shop, auth, leaderboard) -->
-    <script src="src/supabase.js"></script>
-    <script src="src/auth.js"></script>
-    <script src="src/leaderboard.js"></script>
-    <script src="src/shop.js"></script>
+    <!-- Legacy systems (shop, auth, leaderboard) - Load before main game -->
+    <script type="module" src="src/supabase.js"></script>
+    <script type="module" src="src/auth.js"></script>
+    <script type="module" src="src/leaderboard.js"></script>
+    <script type="module" src="src/shop.js"></script>
 
     <!-- 3D Game using Three.js and ES6 modules -->
     <script type="module" src="src/main.js"></script>
